@@ -1,0 +1,30 @@
+### Login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "{{ username }}",
+  "password": "{{ password }}"
+}
+
+### GET User
+GET http://localhost:8080/user
+Authorization: Bearer {{ jwt }}
+
+### GET Product
+GET http://localhost:8080/products
+Authorization: Bearer {{ jwt }}
+
+### Add Product
+POST http://localhost:8080/products
+Authorization: Bearer {{ jwt }}
+Content-Type: application/json
+
+{
+  "name": "Product 1",
+  "description": "Sample description"
+}
+
+### Delete Product
+DELETE http://localhost:8080/products/1
+Authorization: Bearer {{ jwt }}
