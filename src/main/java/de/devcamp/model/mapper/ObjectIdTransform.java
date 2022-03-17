@@ -2,7 +2,7 @@ package de.devcamp.model.mapper;
 
 import org.bson.types.ObjectId;
 
-public class ProductTransform {
+public class ObjectIdTransform {
     public String objectIdToString(ObjectId id) {
         return id.toString();
     }

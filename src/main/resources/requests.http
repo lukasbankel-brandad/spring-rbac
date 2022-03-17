@@ -30,5 +30,5 @@ Content-Type: application/json
 }
 
 ### Delete Product
-DELETE http://localhost:8080/products/1
+DELETE http://localhost:8080/products/62330f3d824b51421e4c3905
 Authorization: Bearer {{ jwt }}

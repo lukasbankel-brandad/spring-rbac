@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class LoginResult {
-
     @NonNull
     private String jwt;
     private String username;

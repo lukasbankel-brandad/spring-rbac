@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("products")
 @RequiredArgsConstructor
@@ -27,25 +26,25 @@ public class ProductApi {
     private final ProductService productService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('STAFF_MEMBER')")
+    @PreAuthorize("hasAuthority('READER')")
     public ResponseEntity<List<ProductResult>> getProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('STAFF_MEMBER')")
+    @PreAuthorize("hasAuthority('READER')")
     public ResponseEntity<ProductResult> getProduct(@PathVariable String id) {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ASSISTANT_MANAGER', 'MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('WRITER', 'ADMIN')")
     public ResponseEntity<ProductResult> addProduct(@RequestBody ProductResult product) {
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<String> removeProduct(@PathVariable String id) {
         productService.deleteProductById(id);
         return new ResponseEntity<>("Product deleted succesfully.", HttpStatus.OK);

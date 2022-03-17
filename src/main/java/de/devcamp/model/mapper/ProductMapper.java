@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(uses = ProductTransform.class )
+@Mapper(uses = ObjectIdTransform.class )
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper( ProductMapper.class );
 

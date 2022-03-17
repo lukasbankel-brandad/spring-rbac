@@ -2,6 +2,7 @@ package de.devcamp.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -44,44 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .jwtAuthenticationConverter(authenticationConverter());
     }
 
-    @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-
-        UserDetails user1 = User
-                .withUsername("user1")
-                .authorities("ADMIN", "STAFF_MEMBER")
-                .passwordEncoder(passwordEncoder::encode)
-                .password("1234")
-                .build();
-        manager.createUser(user1);
-
-        UserDetails user2 = User
-                .withUsername("user2")
-                .authorities("STAFF_MEMBER")
-                .passwordEncoder(passwordEncoder::encode)
-                .password("1234")
-                .build();
-        manager.createUser(user2);
-
-        UserDetails user3 = User
-                .withUsername("user3")
-                .authorities("ASSISTANT_MANAGER", "STAFF_MEMBER")
-                .passwordEncoder(passwordEncoder::encode)
-                .password("1234")
-                .build();
-        manager.createUser(user3);
-
-        UserDetails user4 = User
-                .withUsername("user4")
-                .authorities("MANAGER", "STAFF_MEMBER")
-                .passwordEncoder(passwordEncoder::encode)
-                .password("1234")
-                .build();
-        manager.createUser(user4);
-
-        return manager;
+    @Override @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     protected JwtAuthenticationConverter authenticationConverter() {
