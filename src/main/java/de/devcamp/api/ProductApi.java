@@ -38,13 +38,13 @@ public class ProductApi {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('WRITER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('WRITER')")
     public ResponseEntity<ProductResult> addProduct(@RequestBody ProductResult product) {
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> removeProduct(@PathVariable String id) {
         productService.deleteProductById(id);
         return new ResponseEntity<>("Product deleted succesfully.", HttpStatus.OK);

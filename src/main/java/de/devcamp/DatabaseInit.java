@@ -34,9 +34,11 @@ public class DatabaseInit implements ApplicationListener<ApplicationReadyEvent> 
         User writer = new User(new ObjectId("6233149261059d54b23d4ff8"), "user2", passwordEncoder.encode("password"), Set.of(new Role(Role.READER), new Role(Role.WRITER)), true);
         User admin = new User(new ObjectId("6233149461059d54b23d4ff9"), "user3", passwordEncoder.encode("password"), Set.of(new Role(Role.READER), new Role(Role.WRITER), new Role(Role.ADMIN)), true);
         User nobody = new User(new ObjectId("6233285e7202476ff9789008"), "user4", passwordEncoder.encode("password"), Set.of(), true);
+        User admin2 = new User(new ObjectId("62332d3288311a2515ffae86"), "user5", passwordEncoder.encode("password"), Set.of(new Role(Role.ADMIN)), true);
         userRepo.save(reader);
         userRepo.save(writer);
         userRepo.save(admin);
         userRepo.save(nobody);
+        userRepo.save(admin2);
     }
 }
