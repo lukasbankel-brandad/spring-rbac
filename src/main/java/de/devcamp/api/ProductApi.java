@@ -1,8 +1,11 @@
 package de.devcamp.api;
 
-import de.devcamp.model.Product;
+import de.devcamp.model.dto.ProductResult;
+import de.devcamp.model.entity.Product;
 import de.devcamp.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @RestController
@@ -24,19 +28,26 @@ public class ProductApi {
 
     @GetMapping
     @PreAuthorize("hasAuthority('STAFF_MEMBER')")
-    public Collection<Product> getProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<List<ProductResult>> getProducts() {
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('STAFF_MEMBER')")
+    public ResponseEntity<ProductResult> getProduct(@PathVariable String id) {
+        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ASSISTANT_MANAGER', 'MANAGER', 'ADMIN')")
-    public void addProduct(@RequestBody Product product) {
-        productService.addProduct(product);
+    public ResponseEntity<ProductResult> addProduct(@RequestBody ProductResult product) {
+        return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    public void removeProduct(@PathVariable long id) {
+    public ResponseEntity<String> removeProduct(@PathVariable String id) {
         productService.deleteProductById(id);
+        return new ResponseEntity<>("Product deleted succesfully.", HttpStatus.OK);
     }
 }

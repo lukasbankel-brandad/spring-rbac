@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import de.devcamp.config.JwtHelper;
 import de.devcamp.config.WebSecurityConfig;
-import de.devcamp.model.LoginRequest;
-import de.devcamp.model.LoginResult;
+import de.devcamp.model.dto.LoginRequest;
+import de.devcamp.model.dto.LoginResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -54,7 +53,6 @@ public class AuthApi {
             String jwt = jwtHelper.createJwtForClaims(loginRequest.getUsername(), claims);
             return new ResponseEntity<>(new LoginResult(jwt, loginRequest.getUsername()), HttpStatus.OK);
         }
-
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
     }
 }

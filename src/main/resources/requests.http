@@ -11,8 +11,12 @@ Content-Type: application/json
 GET http://localhost:8080/user
 Authorization: Bearer {{ jwt }}
 
-### GET Product
+### GET All Products
 GET http://localhost:8080/products
+Authorization: Bearer {{ jwt }}
+
+### GET Product By Id
+GET http://localhost:8080/products/62330f3d824b51421e4c3905
 Authorization: Bearer {{ jwt }}
 
 ### Add Product

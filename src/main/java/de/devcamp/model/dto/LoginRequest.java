@@ -1,4 +1,4 @@
-package de.devcamp.model;
+package de.devcamp.model.dto;
 
 import lombok.Data;
 

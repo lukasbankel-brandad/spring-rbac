@@ -1,47 +1,52 @@
 package de.devcamp.service;
 
-import de.devcamp.model.Product;
+import de.devcamp.model.dto.ProductResult;
+import de.devcamp.model.entity.Product;
+import de.devcamp.model.mapper.ProductMapper;
+import de.devcamp.repository.ProductRepo;
+import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
+    private final ProductRepo productRepo;
 
-    private final Map<Long, Product> productMap = new ConcurrentHashMap<>();
-    private final AtomicInteger idCounter = new AtomicInteger(0);
-
-    public ProductService() {
-        addProduct(new Product("First Product", "First Product Description"));
-        addProduct(new Product("Second Product", "Second Product Description"));
+    public List<ProductResult> getAllProducts() {
+        List<Product> products = productRepo.findAll();
+        return ProductMapper.INSTANCE.mapToProductResult(products);
     }
 
-    public Collection<Product> getAllProducts() {
-        return productMap.values();
+    public ProductResult addProduct(ProductResult result) {
+        Product product = ProductMapper.INSTANCE.dtoToProduct(result);
+        Product savedProduct = productRepo.save(product);
+        return ProductMapper.INSTANCE.productToDto(savedProduct);
     }
 
-    public Product getProductById(long id) {
-        return productMap.get(id);
-    }
-
-    public void addProduct(Product product) {
-        if (productMap.values().stream().anyMatch(p -> p.getName().equals(product.getName()))) {
-            throw new IllegalArgumentException(String.format("Product with name %s already exists", product.getName()));
-        }
-
-        product.setId(idCounter.incrementAndGet());
-        productMap.put(product.getId(), product);
-    }
-
-    public void deleteProductById(long id) {
-        if (!productMap.containsKey(id)) {
+    public void deleteProductById(String id) {
+        Optional<Product> product = productRepo.findById(new ObjectId(id));
+        if (!product.isPresent()) {
             throw new IllegalArgumentException(String.format("Product with id %d doesn't exist", id));
         }
-
-        productMap.remove(id);
+        productRepo.delete(product.get());
     }
 
+    public ProductResult getProduct(String id) {
+        Optional<Product> product = productRepo.findById(new ObjectId(id));
+        if(!product.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        return ProductMapper.INSTANCE.productToDto(product.get());
+    }
 }
