@@ -30,11 +30,13 @@ public class DatabaseInit implements ApplicationListener<ApplicationReadyEvent> 
         productRepo.save(product1);
         productRepo.save(product2);
 
-        User user1 = new User(new ObjectId("62330da1ec8ccc3dc2846671"), "user1", passwordEncoder.encode("password"), Set.of(new Role(Role.READER)), true);
-        User user2 = new User(new ObjectId("6233149261059d54b23d4ff8"), "user2", passwordEncoder.encode("password"), Set.of(new Role(Role.READER), new Role(Role.WRITER)), true);
-        User user3 = new User(new ObjectId("6233149461059d54b23d4ff9"), "user3", passwordEncoder.encode("password"), Set.of(new Role(Role.READER), new Role(Role.WRITER), new Role(Role.ADMIN)), true);
-        userRepo.save(user1);
-        userRepo.save(user2);
-        userRepo.save(user3);
+        User reader = new User(new ObjectId("62330da1ec8ccc3dc2846671"), "user1", passwordEncoder.encode("password"), Set.of(new Role(Role.READER)), true);
+        User writer = new User(new ObjectId("6233149261059d54b23d4ff8"), "user2", passwordEncoder.encode("password"), Set.of(new Role(Role.READER), new Role(Role.WRITER)), true);
+        User admin = new User(new ObjectId("6233149461059d54b23d4ff9"), "user3", passwordEncoder.encode("password"), Set.of(new Role(Role.READER), new Role(Role.WRITER), new Role(Role.ADMIN)), true);
+        User nobody = new User(new ObjectId("6233285e7202476ff9789008"), "user4", passwordEncoder.encode("password"), Set.of(), true);
+        userRepo.save(reader);
+        userRepo.save(writer);
+        userRepo.save(admin);
+        userRepo.save(nobody);
     }
 }

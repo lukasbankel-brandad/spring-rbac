@@ -25,10 +25,10 @@ Authorization: Bearer {{ jwt }}
 Content-Type: application/json
 
 {
-  "name": "Product 1",
+  "name": "Newly Added Product",
   "description": "Sample description"
 }
 
 ### Delete Product
-DELETE http://localhost:8080/products/62330f3d824b51421e4c3905
+DELETE http://localhost:8080/products/6233285e7202476ff9789008
 Authorization: Bearer {{ jwt }}

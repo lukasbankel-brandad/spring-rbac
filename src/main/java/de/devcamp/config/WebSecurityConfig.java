@@ -8,13 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,7 +17,6 @@ import org.springframework.stereotype.Component;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String AUTHORITIES_CLAIM_NAME = "roles";
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,17 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 .antMatchers("/login").permitAll()
                                 .anyRequest().authenticated()
                 )
+                // Use builtin OAuth2 Resource Server
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
         // Use the new Converter
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(authenticationConverter());
-    }
-
-    @Override @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 
     protected JwtAuthenticationConverter authenticationConverter() {
