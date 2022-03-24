@@ -5,6 +5,7 @@ import de.devcamp.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,21 +23,25 @@ public class ProductApi {
     private final ProductService productService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READER')")
     public ResponseEntity<List<ProductResult>> getProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('READER')")
     public ResponseEntity<ProductResult> getProduct(@PathVariable String id) {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('WRITER')")
     public ResponseEntity<ProductResult> addProduct(@RequestBody ProductResult product) {
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> removeProduct(@PathVariable String id) {
         productService.deleteProductById(id);
         return new ResponseEntity<>("Product deleted succesfully.", HttpStatus.OK);
